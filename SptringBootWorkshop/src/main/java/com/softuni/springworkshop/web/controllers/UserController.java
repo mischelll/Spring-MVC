@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -45,9 +46,10 @@ public class UserController {
     }
 
 
-
     @GetMapping("/register")
-    public ModelAndView getRegister() {
+    public ModelAndView getRegister(@ModelAttribute(name = "user") @Valid UserRegisterModel user,
+                                    BindingResult bindingResult, ModelAndView model) {
+        model.addObject("user", user);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) {
             /* The user is logged in :) */
@@ -57,13 +59,25 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ModelAndView getRegisterConfirm(@Valid @ModelAttribute(name = "user") UserRegisterModel user,
-                                           BindingResult bindingResult) {
+    public ModelAndView getRegisterConfirm(@ModelAttribute(name = "user") @Valid UserRegisterModel user,
+                                           BindingResult bindingResult,
+                                           HttpSession httpSession,
+                                           ModelAndView modelAndView,
+                                           RedirectAttributes redirectAttributes) {
 
-        if (!this.userService.register(this.mapper.map(user, UserRegisterServiceModel.class))) {
-            return new ModelAndView("register");
 
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("user", user);
+            modelAndView.setViewName("redirect:/users/register");
+        } else {
+            UserRegisterServiceModel userRegisterServiceModel = this.userService.register(this.mapper.map(user, UserRegisterServiceModel.class));
+            modelAndView.setViewName("redirect:/users/login");
         }
-        return new ModelAndView("redirect:/login");
+//        if (!this.userService.register(this.mapper.map(user, UserRegisterServiceModel.class))) {
+//            return new ModelAndView("register");
+//
+//        }
+        return modelAndView;
     }
 }
+

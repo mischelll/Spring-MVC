@@ -15,14 +15,14 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserRegisterServiceModel {
-    @NotEmpty(message = "Username cannot be empty")
-    @Size(min = 3, max = 32, message = "Please enter a valid username")
+    @NotEmpty
+    @Size(min = 3, max = 32, message = "Username must be between 3 and 32 characters")
     private String username;
-    @NotEmpty(message = "Email cannot be empty")
+    @NotEmpty
     @Email(message = "Please enter a valid email")
     private String email;
     @NotEmpty(message = "Password cannot be empty")
-    @Size(min = 8, max = 255, message = "Please enter a valid password")
+    @Size(min = 8, max = 255, message = "Password must be between 8 and 255 characters")
     private String password;
     @NotEmpty
     @Size(min = 8, max = 255, message = "Please enter a valid password")

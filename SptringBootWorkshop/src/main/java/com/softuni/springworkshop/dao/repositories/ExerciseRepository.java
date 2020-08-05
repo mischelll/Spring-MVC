@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ExerciseRepository extends JpaRepository<Exercise,String> {
+    Exercise findByName(String name);
 }

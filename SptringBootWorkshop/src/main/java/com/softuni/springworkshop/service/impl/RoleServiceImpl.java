@@ -3,6 +3,7 @@ package com.softuni.springworkshop.service.impl;
 import com.softuni.springworkshop.dao.entities.Role;
 import com.softuni.springworkshop.dao.repositories.RoleRepository;
 import com.softuni.springworkshop.service.RoleService;
+import com.softuni.springworkshop.web.models.RoleAddModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,8 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role findByAuthority(String authority) {
-        return this.roleRepository.findByAndAuthority(authority);
+        return this.roleRepository.findByAuthority(authority);
     }
+
+
 }
